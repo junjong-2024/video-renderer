@@ -1,7 +1,7 @@
 import subprocess
 
 
-def render(input, filename):
+def render(input, id):
     # members = {}
     videos = []
 
@@ -29,9 +29,19 @@ def render(input, filename):
 
     video_filter = video_filter + ", drawtext=text='%{pts\:gmtime\:0\:%M\\\\\:%S}':x=1700:y=(h-text_h)/2:font='NanumGothic':fontsize=32:fontcolor=white"
 
-    command = ['ffmpeg'] + videos + ['-filter_complex', video_filter, filename]
+    command = ['ffmpeg'] + videos + ['-filter_complex', video_filter, f'files/{id}.mp4']
 
     subprocess.run(command)
+    subprocess.run([
+        'ffmpeg',
+        '-i',
+        f'files/{id}.mp4',
+        '-ss',
+        '00:00:01.000',
+        '-vframes',
+        '1',
+        f'files/{id}.jpg'
+    ])
 
 
 if __name__ == '__main__':
@@ -59,4 +69,4 @@ if __name__ == '__main__':
             {'debater': 'team_b_1', 'msg': '팀 B 마무리', 'time': 5}
         ]
     }
-    render(sample_data, 'output.mp4')
+    render(sample_data, 'output')
