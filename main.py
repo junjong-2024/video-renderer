@@ -1,17 +1,30 @@
-import redis
-import render_ffmpeg
 import json
 import os
 
-r = redis.Redis(host=os.environ['REDIS_HOST'], port=6379, decode_responses=True)
+import pika
+
+import render_ffmpeg
 
 
 def print_log(*args):
     print(' '.join([str(arg) for arg in args]), end="\n")
 
 
-while True:
-    _, v = r.brpop('render')
-    data = json.loads(v)
-    print_log(data)
-    render_ffmpeg.render(data)
+def main():
+    connection = pika.BlockingConnection(pika.ConnectionParameters(host=os.environ['RABBITMQ_HOST']))
+    channel = connection.channel()
+
+    channel.queue_declare(queue='render')
+
+    def callback(ch, method, properties, body):
+        data = json.loads(body)
+        print_log(data)
+        render_ffmpeg.render(data)
+
+    channel.basic_consume(queue='render', on_message_callback=callback, auto_ack=True)
+
+    channel.start_consuming()
+
+
+if __name__ == '__main__':
+    main()

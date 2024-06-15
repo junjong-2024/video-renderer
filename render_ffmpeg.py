@@ -2,7 +2,11 @@ import subprocess
 import os
 import requests
 
-HOST = os.environ['API_HOST']
+# HOST = os.environ['API_HOST']
+
+
+def print_log(*args):
+    print(' '.join([str(arg) for arg in args]), end="\n")
 
 
 def render(body):
