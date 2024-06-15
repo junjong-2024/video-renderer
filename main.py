@@ -1,5 +1,6 @@
 import json
 import os
+import time
 
 import pika
 
@@ -27,4 +28,5 @@ def main():
 
 
 if __name__ == '__main__':
+    time.sleep(5)
     main()
