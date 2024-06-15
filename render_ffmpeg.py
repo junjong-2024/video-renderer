@@ -2,7 +2,7 @@ import subprocess
 import os
 import requests
 
-# HOST = os.environ['API_HOST']
+HOST = os.environ['API_HOST']
 
 
 def print_log(*args):
@@ -73,7 +73,7 @@ def render(body):
         for member in body['members']:
             os.remove(member['filename'])
     else:
-        print(f'Error! id: ${room_id}')
+        print(f'Error! id: {room_id}')
 
 
 if __name__ == '__main__':
