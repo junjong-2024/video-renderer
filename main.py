@@ -5,6 +5,13 @@ import os
 
 r = redis.Redis(host=os.environ['REDIS_HOST'], port=6379, decode_responses=True)
 
+
+def print_log(*args):
+    print(' '.join([str(arg) for arg in args]), end="\n")
+
+
 while True:
     _, v = r.brpop('render')
-    render_ffmpeg.render(json.loads(v))
+    data = json.loads(v)
+    print_log(data)
+    render_ffmpeg.render(data)
