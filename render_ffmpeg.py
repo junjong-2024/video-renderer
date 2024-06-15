@@ -1,8 +1,16 @@
 import subprocess
 import os
 import requests
+import mysql.connector
 
-HOST = os.environ['API_HOST']
+
+conn = mysql.connector.connect(
+    host=os.environ['MYSQL_HOST'],
+    port=3306,
+    user='root',
+    password=os.environ['MYSQL_PASSWORD'],
+    database='debait'
+)
 
 
 def print_log(*args):
@@ -65,11 +73,9 @@ def render(body):
         f'files/{room_id}.jpg'
     ])
     if proc.returncode == 0:
-        requests.put(HOST + '/api/room', json={
-            'script': '',
-            'video_src': f'files/{room_id}.mp4',
-            'thumbnail_src': f'files/{room_id}.jpg'
-        })
+        cur = conn.cursor()
+        cur.execute('UPDATE discussion_room SET video_src = ?, thumbnail_src = ? WHERE id = ?',
+                    [f'files/{room_id}.mp4', f'files/{room_id}.jpg', room_id])
         for member in body['members']:
             os.remove(member['filename'])
     else:
