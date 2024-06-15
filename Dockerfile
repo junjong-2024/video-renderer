@@ -13,7 +13,7 @@ RUN rm -f NanumFont_TTF_ALL.zip
 RUN mv NanumFont /usr/share/fonts/
 RUN fc-cache -f -v
 
-RUN apt-get --purge remove wget unzip
+RUN apt-get --purge -y remove wget unzip
 
 COPY requirements.txt ./
 RUN pip install -r requirements.txt
