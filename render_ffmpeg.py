@@ -1,6 +1,5 @@
 import subprocess
 import os
-import requests
 import mysql.connector
 
 
