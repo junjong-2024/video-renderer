@@ -28,5 +28,5 @@ def main():
 
 
 if __name__ == '__main__':
-    time.sleep(5)
+    time.sleep(10)
     main()
