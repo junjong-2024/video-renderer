@@ -73,7 +73,7 @@ def render(body):
     ])
     if proc.returncode == 0:
         cur = conn.cursor()
-        cur.execute('UPDATE discussion_room SET video_src = ?, thumbnail_src = ? WHERE id = ?',
+        cur.execute('UPDATE discussion_room SET video_src = %s, thumbnail_src = %s WHERE id = %s',
                     [f'files/{room_id}.mp4', f'files/{room_id}.jpg', room_id])
         for member in body['members']:
             os.remove(member['filename'])
