@@ -75,6 +75,7 @@ def render(body):
         cur = conn.cursor()
         cur.execute('UPDATE discussion_room SET video_src = %s, thumbnail_src = %s WHERE id = %s',
                     [f'files/{room_id}.mp4', f'files/{room_id}.jpg', room_id])
+        conn.commit()
         for member in body['members']:
             os.remove(member['filename'])
     else:
